@@ -1,0 +1,13 @@
+[target.thumbv7em-none-eabi]
+# `cargo run --release` flashes the default dual-motor build (Modbus slave 1 -> CAN ID 1,
+# slave 2 -> CAN ID 2). `--connect-under-reset` does not work with `probe-rs run` on this
+# ST-Link (times out halting under reset); plain `run` flashes and Modbus answers afterwards.
+runner = "probe-rs run --chip STM32F407VG"
+
+[build]
+target = "thumbv7em-none-eabi"
+
+[env]
+DEFMT_LOG = "debug"
+# Room for the 10 Hz `ADC mV` lines between probe reads (default 1 KiB).
+DEFMT_RTT_BUFFER_SIZE = "4096"

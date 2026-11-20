@@ -1,0 +1,44 @@
+[package]
+name = "stm-gripper-controller"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+# Plain `cargo build` / `cargo run` make the dual-motor firmware (the Clicker 4 board drives two
+# motors). A one-motor board needs `--no-default-features` (then MODBUS_SLAVE_ID / MOTOR_CAN_ID).
+default = ["dual-motor"]
+# One board drives two motors: Modbus slave 1 -> CAN ID 1, slave 2 -> CAN ID 2 (config::DUAL_MOTOR).
+dual-motor = []
+# Positive output rotation closes the gripper; the installed ones close negative (config::GRIPPER_2MM).
+close-positive = []
+# Activation homes the ball-screw gripper (config::Gripper) before it accepts motion. Off by
+# default: activation only waits for the first motor feedback, so a run (rACT + rGTO) starts
+# at once and every mode drives the bare motor between the +-8 turn endpoints.
+gripper-homing = []
+
+[target.'cfg(target_os = "none")'.dependencies]
+embassy-executor = { version = "0.9", features = ["defmt", "arch-cortex-m", "executor-thread", "executor-interrupt"] }
+embassy-time = { version = "0.5", features = ["defmt"] }
+embassy-stm32 = { version = "0.4", features = ["defmt", "stm32f407vg", "unstable-pac", "memory-x", "time-driver-any", "exti"] }
+embassy-net = { version = "0.7", features = ["defmt", "tcp", "medium-ethernet", "proto-ipv4"] }
+embassy-futures = { version = "0.1" }
+embassy-sync = { version = "0.7" }
+
+panic-probe = { version = "1.0.0", features = ["print-defmt"] }
+
+static_cell = "2.1.1"
+defmt = "1.0.1"
+# Non-blocking RTT: probe-rs switches RTT to blocking, so after `cargo run` is stopped a full
+# log buffer would otherwise freeze the firmware (Modbus and CAN with it). Lines are dropped instead.
+defmt-rtt = { version = "1.1.0", features = ["disable-blocking-mode"] }
+
+cortex-m = { version = "0.7.7", features = ["inline-asm", "critical-section-single-core"] }
+cortex-m-rt = "0.7.5"
+
+heapless = "0.8"
+num-traits = { version = "0.2.19", default-features = false, features = ["libm"] }
+
+[profile.release]
+opt-level = "s"
+lto = "fat"
+debug = 2

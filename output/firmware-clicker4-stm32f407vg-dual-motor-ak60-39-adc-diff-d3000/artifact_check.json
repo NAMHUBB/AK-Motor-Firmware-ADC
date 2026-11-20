@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "hex_checksum_all_records": true,
+  "record_count": 5077,
+  "hex_bin_exact_match": true,
+  "binary_bytes": 81172,
+  "sha256": {
+    "ak80_9_robotiq.elf": "07c5323c0d226c369bd6784ad7edad5b03d4a80bd313c605cf051aa5ef0b2201",
+    "ak80_9_robotiq.bin": "47034b15a04909b37aaddb4d9b0c5bca28b638dea98f341f9e759535433898d5",
+    "ak80_9_robotiq.hex": "8d43e98b34bc32bf98e3bd11b5bb2dd654bced7c07492d8fefd38b2b349afbdd"
+  }
+}

@@ -1,0 +1,6 @@
+/target
+/backup
+.DS_Store
+# Firmware images: only the one on the board is kept in git (the others stay local).
+/output/*
+!/output/firmware-clicker4-stm32f407vg-dual-motor-ak60-39-adc-diff-d3000/
